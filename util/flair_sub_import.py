@@ -1,13 +1,14 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
-import sys, os
+import sys
+import os
 import json
 import argparse
 import praw
-from ConfigParser import SafeConfigParser
+import configparser
 
 containing_dir = os.path.dirname(os.path.abspath(os.path.dirname(sys.argv[0])))
-cfg_file = SafeConfigParser()
+cfg_file = configparser()
 path_to_cfg = os.path.join(containing_dir, 'config.cfg')
 cfg_file.read(path_to_cfg)
 username = cfg_file.get('reddit', 'username')
@@ -16,10 +17,12 @@ app_key = cfg_file.get('reddit', 'app_key')
 app_secret = cfg_file.get('reddit', 'app_secret')
 subreddit = cfg_file.get('reddit', 'subreddit')
 
+
 def extant_file(x):
     if not os.path.exists(x):
         raise argparse.ArgumentError("{0} does not exist".format(x))
     return x
+
 
 def main():
     parser = argparse.ArgumentParser(description="Import flairs to subreddit")
@@ -38,6 +41,7 @@ def main():
     elif args.filetype == "csv":
         r.subreddit(subreddit).flair.update(load_csv(args.filename))
 
+
 def load_json(file):
     flair_json = json.load(open(file))
     for entry in flair_json:
@@ -47,9 +51,10 @@ def load_json(file):
 
     return flair_json
 
+
 def load_csv(file):
     flair_dict = []
-    print "start"
+    print("start")
     with open(file) as flair:
         for line in flair:
             username, flair_css, flair_text = line.rstrip().split(',')
@@ -62,6 +67,7 @@ def load_csv(file):
             flair_dict.append(i)
 
     return flair_dict
+
 
 if __name__ == "__main__":
     main()

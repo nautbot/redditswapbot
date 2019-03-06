@@ -1,16 +1,17 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import sys, os
 import re
 import ast
 import praw
-import sqlite3
+import psycopg2
 import datetime
-from ConfigParser import SafeConfigParser
+import configparser
 from datetime import datetime, timedelta
 from time import sleep, time
 from log_conf import LoggerManager
 import argparse
+
 # determine curr or prev month
 parser = argparse.ArgumentParser(description="Process flairs")
 parser.add_argument("-m", action="store", dest="month", default="curr", help="curr or prev month? (default: curr)")
@@ -21,7 +22,7 @@ if results.month == "prev":
 
 # load config file
 containing_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-cfg_file = SafeConfigParser()
+cfg_file = configparser()
 path_to_cfg = os.path.join(containing_dir, 'config.cfg')
 cfg_file.read(path_to_cfg)
 username = cfg_file.get('reddit', 'username')
@@ -43,6 +44,7 @@ notrade_flairclass = ast.literal_eval(cfg_file.get('trade', 'notrade_flairclass'
 
 # Configure logging
 logger = LoggerManager().getLogger(__name__)
+
 
 def main():
 
@@ -151,9 +153,8 @@ def main():
             completed = myfile.read()
 
         try:
-            con = sqlite3.connect(flair_db)
-            con.row_factory = sqlite3.Row
-        except sqlite3.Error, e:
+            con = psycopg2.connect(host="localhost",database="GAFSBot", user="admin", password="admin")
+        except psycopg2.Error as e:
             logger.exception("Error %s:" % e.args[0])
 
         curs = con.cursor()
@@ -263,6 +264,7 @@ def main():
 
     except Exception as e:
         logger.error(e)
+
 
 if __name__ == '__main__':
     main()

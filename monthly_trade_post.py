@@ -1,14 +1,15 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
-import sys, os
+import sys
+import os
 import re
-from ConfigParser import SafeConfigParser
+import configparser
 import praw
 import time
 from log_conf import LoggerManager
 
 containing_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-cfg_file = SafeConfigParser()
+cfg_file = configparser()
 path_to_cfg = os.path.join(containing_dir, 'config.cfg')
 cfg_file.read(path_to_cfg)
 

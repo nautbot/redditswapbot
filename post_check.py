@@ -1,11 +1,12 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
-import sys, os
-from ConfigParser import SafeConfigParser
+import sys
+import os
+import configparser
 import praw
 import re
 import ast
-import sqlite3
+import psycopg2
 import unicodedata
 from datetime import datetime, timedelta
 from time import sleep, time
@@ -13,7 +14,7 @@ from log_conf import LoggerManager
 
 # load config file
 containing_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-cfg_file = SafeConfigParser()
+cfg_file = configparser()
 path_to_cfg = os.path.join(containing_dir, 'config.cfg')
 cfg_file.read(path_to_cfg)
 username = cfg_file.get('reddit', 'username')
@@ -39,7 +40,7 @@ def main():
             try:
                 con = sqlite3.connect(flair_db, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
                 con.row_factory = sqlite3.Row
-            except sqlite3.Error, e:
+            except sqlite3.Error as e:
                 logger.error("Error %s:" % e.args[0])
 
             curs = con.cursor()
@@ -163,6 +164,7 @@ def main():
         except Exception as e:
             logger.error(e)
             sleep(120)
+
 
 if __name__ == '__main__':
     main()

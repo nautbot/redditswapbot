@@ -101,7 +101,7 @@ class mySQLHandler(logging.Handler):
         if not result:
             try:
                 conn=MySQLdb.connect(host=self.db['host'],port=self.db['port'],user=self.db['dbuser'],passwd=self.db['dbpassword'],db=self.db['dbname'])
-            except _mysql_exceptions, e:
+            except _mysql_exceptions as e:
                 raise Exception(e)
                 exit(-1)
             else:         
@@ -123,7 +123,7 @@ class mySQLHandler(logging.Handler):
     def checkTablePresence(self):
         try:
             conn=MySQLdb.connect(host=self.db['host'],port=self.db['port'],user=self.db['dbuser'],passwd=self.db['dbpassword'],db=self.db['dbname'])
-        except _mysql_exceptions, e:
+        except _mysql_exceptions as e:
             raise Exception(e)
             exit(-1)
         else:
@@ -168,7 +168,7 @@ class mySQLHandler(logging.Handler):
         sql = mySQLHandler.insertion_sql
         try:
             conn=MySQLdb.connect(host=self.db['host'],port=self.db['port'],user=self.db['dbuser'],passwd=self.db['dbpassword'],db=self.db['dbname'])
-        except _mysql_exceptions, e:
+        except _mysql_exceptions as e:
             from pprint import pprint
             print("The Exception during db.connect")           
             pprint(e)
@@ -200,7 +200,7 @@ class mySQLHandler(logging.Handler):
                 conn.commit()
                 # then Exception vanished
                     
-        except _mysql_exceptions, e:
+        except _mysql_exceptions as e:
             conn.rollback()
             cur.close()
             conn.close()
@@ -220,8 +220,7 @@ def main():
         oLog.warning('warning')
         oLog.error('error')
         oLog.critical('critical')
-    
-                
+
     logger = logging.getLogger('simple_example')
     logger.setLevel(logging.DEBUG)
         
@@ -232,8 +231,6 @@ def main():
     # In main Thread
     print_all_log(logger)
     
-
-
 
 if __name__ == '__main__':
     main()
