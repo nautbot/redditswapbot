@@ -4,6 +4,8 @@
 
 Scripts that are used on /r/mechmarket and /r/hardwareswap created by the mods of /r/hardwareswap and modified for use by /u/chankster, /u/NotMelNoGuitars, and /u/thelectronicnub. There are three currently running instances of the bot, /u/hwsbot, /u/mechkbot, /u/funkoswapbot.  Finally updated to support Praw v5.
 
+Modified to support the needs of /r/GunAccessoriesForSale
+
 ## Files
 
 * **flair.py**
