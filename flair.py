@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import sys, os
+import sys
+import os
 import re
 import ast
 import praw
@@ -153,6 +154,7 @@ def main():
             completed = myfile.read()
 
         try:
+            # todo: standardize db connection parameters
             con = psycopg2.connect(host="localhost",database="GAFSBot", user="admin", password="admin")
         except psycopg2.Error as e:
             logger.exception("Error %s:" % e.args[0])
@@ -264,7 +266,3 @@ def main():
 
     except Exception as e:
         logger.error(e)
-
-
-if __name__ == '__main__':
-    main()

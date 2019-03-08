@@ -21,6 +21,7 @@ def main():
     args = parser.parse_args()
 
     try:
+        # todo: standardize db connection parameters
         con = psycopg2.connect(host="localhost",database="GAFSBot", user="admin", password="admin")
     except psycopg2.Error as e:
         print("Error %s:" % e.args[0])

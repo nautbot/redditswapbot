@@ -2,7 +2,7 @@ import sys
 import os
 import configparser
 import logging
-import mySQLHandler
+import PostgresHandler
 
 # load config file
 containing_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
@@ -11,10 +11,10 @@ path_to_cfg = os.path.join(containing_dir, 'config.cfg')
 cfg_file.read(path_to_cfg)
 logging_dest = cfg_file.get('logging', 'dest')
 
-mysql_hostname = cfg_file.get('mysql', 'hostname')
-mysql_username = cfg_file.get('mysql', 'username')
-mysql_password = cfg_file.get('mysql', 'password')
-mysql_database = cfg_file.get('mysql', 'database')
+db_hostname = cfg_file.get('database', 'hostname')
+db_username = cfg_file.get('database', 'username')
+db_password = cfg_file.get('database', 'password')
+db_database = cfg_file.get('database', 'database')
 
 
 class Singleton(type):
@@ -41,10 +41,10 @@ class LoggerManager(object):
         LoggerManager._loggers[name].setLevel(logging.INFO)
 
         if logging_dest == 'mysql':
-            db = {'host': mysql_hostname, 'port': 3306, 'dbuser': mysql_username, 'dbpassword': mysql_password,
-                  'dbname': mysql_database}
+            db = {'host': db_hostname, 'port': 3306, 'dbuser': db_username, 'dbpassword': db_password,
+                  'dbname': db_database}
 
-            sqlh = mySQLHandler.mySQLHandler(db)
+            sqlh = PostgresHandler.PostgresHandler(db)
             LoggerManager._loggers[name].addHandler(sqlh)
         else:
             fileh = logging.FileHandler('actions.log')
